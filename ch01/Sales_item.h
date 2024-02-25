@@ -24,6 +24,8 @@ public:
 
     Sales_item(std::istream &is) { is >> *this; }
 
+    operator bool();
+
 public:
     Sales_item &operator+=(const Sales_item &);
 

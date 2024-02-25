@@ -534,8 +534,8 @@ void q_3_43() {
     };
 
     // 范围 for
-    for (int (&row)[4] : ia) {
-        for (int i : row) {
+    for (int (&row)[4]: ia) {
+        for (int i: row) {
             std::cout << i << std::endl;
         }
     }
@@ -562,7 +562,7 @@ void q_3_43() {
  * 练习3.44：改写上一个练习中的程序，使用类型别名来代替循环控制变量的类型。
  */
 void q_3_44() {
-    using int_array = int [4];
+    using int_array = int[4];
 
     int ia[3][4] = {
             {1, 2,  3,  4},
@@ -588,7 +588,7 @@ void q_3_44() {
 
     // pointer for
     for (int_array *i = ia; i < ia + 3; i++) {
-        for (int* j = *i; j < *i + 4; j++) {
+        for (int *j = *i; j < *i + 4; j++) {
             std::cout << *j << std::endl;
         }
     }
@@ -623,7 +623,7 @@ void q_3_45() {
 
     // pointer for
     for (auto *i = ia; i < ia + 3; i++) {
-        for (int* j = *i; j < *i + 4; j++) {
+        for (int *j = *i; j < *i + 4; j++) {
             std::cout << *j << std::endl;
         }
     }
@@ -696,7 +696,7 @@ int main() {
 //    q_3_42();
 //    q_3_43();
 //    q_3_44();
-    q_3_45();
+//    q_3_45();
 
 //    e_digital_to_xdigital();
 //    e_square();
