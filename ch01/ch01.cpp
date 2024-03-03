@@ -36,8 +36,8 @@ void inputTwo() {
 }
 
 int main() {
-    inputOne();
-//    inputTwo();
+//    inputOne();
+    inputTwo();
 //    inputMore();
     return 0;
 }

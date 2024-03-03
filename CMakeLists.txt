@@ -12,3 +12,7 @@ add_executable(ch02 ch02/ch02.cpp)
 add_executable(ch03 ch03/ch03.cpp)
 
 add_executable(ch04 ch04/ch04.cpp)
+
+add_executable(ch06 ch06/ch06.cpp)
+
+add_executable(ch07 ch07/ch07.cpp ch07/Person.cpp ch07/Person.h ch07/Sales_data.cpp ch07/Sales_data.h)
