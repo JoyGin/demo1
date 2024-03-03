@@ -13,14 +13,14 @@
 
 void q_7_1() {
     Sales_data total;
-    if (std::cin >> total.bookNo >> total.units_sold >> total.revenue) {
+    if (std::cin >> total.isbn() >> total.getUnitsSold() >> total.getRevenue()) {
         Sales_data trans;
-        while (std::cin >> trans.bookNo >> trans.units_sold >> trans.revenue) {
-            if (total.bookNo == trans.bookNo) {
-                total.units_sold += trans.units_sold;
-                total.revenue += trans.revenue;
+        while (std::cin >> trans.isbn() >> trans.getUnitsSold() >> trans.getRevenue()) {
+            if (total.isbn() == trans.isbn()) {
+                total.getUnitsSold() += trans.getUnitsSold();
+                total.getRevenue() += trans.getRevenue();
             } else {
-                std::cout << total.bookNo << " " << total.units_sold << " " << total.revenue << std::endl;
+                std::cout << total.isbn() << " " << total.getUnitsSold() << " " << total.getRevenue() << std::endl;
                 total = trans;
             }
         }
@@ -39,17 +39,17 @@ void q_7_1() {
  */
 void q_7_3() {
     Sales_data total;
-    if (std::cin >> total.bookNo >> total.units_sold >> total.revenue) {
+    if (std::cin >> total.isbn() >> total.getUnitsSold() >> total.getRevenue()) {
         Sales_data trans;
-        while (std::cin >> trans.bookNo >> trans.units_sold >> trans.revenue) {
+        while (std::cin >> trans.isbn() >> trans.getUnitsSold() >> trans.getRevenue()) {
             if (total.isbn() == trans.isbn()) {
                 total.combine(trans);
             } else {
-                std::cout << total.bookNo << " " << total.units_sold << " " << total.revenue << std::endl;
+                std::cout << total.isbn() << " " << total.getUnitsSold() << " " << total.getRevenue() << std::endl;
                 total = trans;
             }
         }
-        std::cout << total.bookNo << " " << total.units_sold << " " << total.revenue << std::endl;
+        std::cout << total.isbn() << " " << total.getUnitsSold() << " " << total.getRevenue() << std::endl;
     } else {
         std::cerr << "No data?!" << std::endl;
     }
@@ -74,7 +74,7 @@ void q_7_7() {
     if (read(std::cin, total)) {
         Sales_data trans;
         while (read(std::cin, trans)) {
-            if (total.bookNo == trans.bookNo) {
+            if (total.isbn() == trans.isbn()) {
                 total = add(total, trans);
             } else {
                 print(std::cout, total) << std::endl;
@@ -110,7 +110,7 @@ void q_7_11() {
  */
 void q_7_13() {
     Sales_data total(std::cin);
-    if (!total.bookNo.empty()) {
+    if (!total.isbn().empty()) {
         while (std::cin) {
             Sales_data trans(std::cin);
             if (std::cin) {

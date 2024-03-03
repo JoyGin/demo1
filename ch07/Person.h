@@ -8,15 +8,16 @@
 #include <string>
 #include <iostream>
 
-class Person;
-
-std::istream &read(std::istream &is, Person &person);
-
 class Person {
-public:
+    friend std::istream &read(std::istream &is, Person &person);
+
+    friend std::ostream &print(std::ostream &os, const Person &person);
+
+private:
     std::string name;
     std::string address;
 
+public:
     /**
     * 练习7.15：为你的Person类添加正确的构造函数。
     */
@@ -36,12 +37,5 @@ public:
         return address;
     }
 };
-
-/**
- * 练习7.9：对于7.1.2节（第233页）练习中的代码，添加读取和打印
- * Person对象的操作。
- */
-
-std::ostream &print(std::ostream &os, const Person &person);
 
 #endif //DEMO1_PERSON_H
