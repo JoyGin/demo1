@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include "Sales_data.h"
+#include "Screen.h"
 
 /**
 * 练习7.1：使用2.6.1节练习定义的Sales_data类为1.6节（第21页）的交易
@@ -130,12 +131,53 @@ void q_7_13() {
     }
 }
 
+/**
+ * 练习7.27
+ * 给你自己的`Screen`类添加`move`、`set` 和`display`函数，通过执行下面的代码检验你的类是否正确。
+ */
+void q_7_27() {
+    using std::cout;
+    Screen myScreen(5, 5, 'X');
+    myScreen.move(4, 0).set('#').display(cout);
+    cout << "\n";
+    myScreen.display(cout);
+    cout << "\n";
+}
+
+/**
+ * 练习7.31：定义一对类X和Y，其中X包含一个指向Y的指针，而Y包含
+ * 一个类型为X的对象。
+ */
+class Y;
+
+class X {
+    Y *pY = nullptr;
+};
+
+class Y {
+    X x;
+};
+
+class NoDefault {
+public:
+    explicit NoDefault(int i) : val(i) {};
+private:
+    int val = 0;
+};
+
+class C {
+public:
+    C() : val(0) {};
+private:
+    NoDefault val;
+};
+
 int main() {
 //    q_7_1();
 //    q_7_3();
 //    q_7_7();
 //    q_7_11();
-    q_7_13();
-
+//    q_7_13();
+    q_7_27();
     return 0;
 }

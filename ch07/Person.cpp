@@ -10,8 +10,10 @@
  */
 std::istream &read(std::istream &is, Person &person) {
     is >> person.name >> person.name;
+    return is;
 }
 
 std::ostream &print(std::ostream &os, const Person &person) {
     os << "name: " + person.name << ", address: " << person.address;
+    return os;
 }

@@ -44,6 +44,10 @@ public:
         return bookNo;
     }
 
+    inline double avgPrice() const {
+        return units_sold > 0 ? revenue / units_sold : 0;
+    }
+
     unsigned &getUnitsSold() {
         return units_sold;
     }
