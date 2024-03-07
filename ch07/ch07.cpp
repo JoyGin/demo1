@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Sales_data.h"
 #include "Screen.h"
+#include "Debug.h"
 
 /**
 * 练习7.1：使用2.6.1节练习定义的Sales_data类为1.6节（第21页）的交易
@@ -178,6 +179,7 @@ int main() {
 //    q_7_7();
 //    q_7_11();
 //    q_7_13();
-    q_7_27();
+//    q_7_27();
+
     return 0;
 }

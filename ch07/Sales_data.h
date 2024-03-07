@@ -28,7 +28,7 @@ public:
     //    Sales_data() = default;
     Sales_data() : bookNo(), units_sold(0), revenue(0) {}
 
-    explicit Sales_data(const std::string &s) : bookNo(s) {}
+    Sales_data(const std::string &s) : bookNo(s) {}
 
     Sales_data(const std::string &s, unsigned n, double price) : bookNo(s), units_sold(n), revenue(price * n) {}
 
@@ -38,7 +38,7 @@ public:
         read(std::cin, *this);
     }
 
-    Sales_data &combine(const Sales_data &rhs);
+    Sales_data &combine(Sales_data &rhs);
 
     std::string &isbn() {
         return bookNo;

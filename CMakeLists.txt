@@ -15,4 +15,4 @@ add_executable(ch04 ch04/ch04.cpp)
 
 add_executable(ch06 ch06/ch06.cpp)
 
-add_executable(ch07 ch07/ch07.cpp ch07/Person.cpp ch07/Person.h ch07/Sales_data.cpp ch07/Sales_data.h ch07/Screen.cpp ch07/Screen.h)
+add_executable(ch07 ch07/ch07.cpp ch07/Person.cpp ch07/Person.h ch07/Sales_data.cpp ch07/Sales_data.h ch07/Screen.cpp ch07/Screen.h ch07/Debug.h ch07/Example.cpp ch07/Example.h ch07/Account.cpp ch07/Account.h)

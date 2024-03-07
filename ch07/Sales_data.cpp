@@ -8,7 +8,7 @@
 //    read(is, *this);
 //}
 
-Sales_data &Sales_data::combine(const Sales_data &rhs) {
+Sales_data &Sales_data::combine(Sales_data &rhs) {
     if (bookNo == rhs.bookNo) {
         units_sold += rhs.units_sold;
         revenue += rhs.revenue;
