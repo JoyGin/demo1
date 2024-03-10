@@ -1,0 +1,6 @@
+bookNo: 1, units_sold: 3, revenue: 48
+bookNo: 2, units_sold: 1, revenue: 20
+bookNo: 1, units_sold: 3, revenue: 48
+bookNo: 2, units_sold: 1, revenue: 20
+bookNo: 1, units_sold: 3, revenue: 48
+bookNo: 2, units_sold: 1, revenue: 20

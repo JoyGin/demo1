@@ -28,7 +28,7 @@ public:
     //    Sales_data() = default;
     Sales_data() : bookNo(), units_sold(0), revenue(0) {}
 
-    Sales_data(const std::string &s) : bookNo(s) {}
+    explicit Sales_data(const std::string &s) : bookNo(s) {}
 
     Sales_data(const std::string &s, unsigned n, double price) : bookNo(s), units_sold(n), revenue(price * n) {}
 

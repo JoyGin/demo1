@@ -25,6 +25,7 @@ Sales_data add(const Sales_data &lhs, const Sales_data &rhs) {
     if (lhs.bookNo != rhs.bookNo) {
         std::cerr << "bookNo is not same!" << std::endl;
     } else {
+        result.bookNo = lhs.bookNo;
         result.revenue = lhs.revenue + rhs.revenue;
         result.units_sold = lhs.units_sold + rhs.units_sold;
     }
