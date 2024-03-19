@@ -317,6 +317,49 @@ void q_9_28() {
     }
 }
 
+/**
+ * 9.5.1节练习
+ * 练习9.41：编写程序，从一个vector<char>初始化一个string。
+ */
+void q_9_41() {
+    std::vector<char> cv = {'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'};
+    std::string str = std::string(cv.cbegin(), cv.cend());
+    std::cout << str << std::endl;
+}
+
+/**
+ * 练习9.42：假定你希望每次读取一个字符存入一个string中，而且知道最
+ * 少需要读取100个字符，应该如何提高程序的性能？
+ */
+void q_9_42() {
+    std::string str;
+    str.resize(100);
+}
+
+/**
+ * 9.5.2节练习
+ * 练习9.43：编写一个函数，接受三个string参数s、oldVal和newVal。使
+ * 用迭代器及insert和erase函数将s中所有oldVal替换为newVal。测试你的
+ * 程序，用它替换通用的简写形式，如，将"tho"替换为"though"，
+ * 将"thru"替换为"through"。
+ */
+
+/**
+ * 练习9.44：重写上一题的函数，这次使用一个下标和replace。
+ */
+
+/**
+ * 练习9.45：编写一个函数，接受一个表示名字的string参数和两个分别表
+ * 示前缀（如"Mr."或"Ms."）和后缀（如"Jr."或"III"）的字符串。使用迭
+ * 代器及insert和append函数将前缀和后缀添加到给定的名字中，将生成的
+ * 新string返回。
+ */
+
+/**
+ * 练习9.46：重写上一题的函数，这次使用位置和长度来管理string，并只
+ * 使用insert。
+ */
+
 int main(int argc, char **argv) {
 //    q_9_4();
 //    q_9_5();
@@ -331,5 +374,6 @@ int main(int argc, char **argv) {
 //    q_9_26();
 //    q_9_27();
 //    q_9_27_new();
-    q_9_28();
+//    q_9_28();
+    q_9_41();
 }
