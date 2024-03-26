@@ -7,7 +7,9 @@
 #include <iostream>
 #include <numeric>
 #include <sstream>
+#include <fstream>
 #include "Sales_data.h"
+#include "Sales_item.h"
 
 /**
  * 10.1节练习
@@ -118,7 +120,7 @@ void q_10_11() {
  * 练习10.12：编写名为compareIsbn的函数，比较两个Sales_data对象的
  * isbn（）成员。使用这个函数排序一个保存Sales_data对象的vector。
  */
-inline bool compareIsbn(const Sales_data &lsd, const Sales_data &rsd) {
+inline bool compareIsbn_10_12(const Sales_data &lsd, const Sales_data &rsd) {
     return lsd.isbn().size() < rsd.isbn().size();
 }
 
@@ -126,7 +128,7 @@ void q_10_12() {
     Sales_data d1("aa"), d2("aaaa"), d3("aaa"), d4("z"), d5("aaaaz");
     std::vector<Sales_data> v{d1, d2, d3, d4, d5};
 
-    std::sort(v.begin(), v.end(), compareIsbn);
+    std::sort(v.begin(), v.end(), compareIsbn_10_12);
 
     for (auto &data: v) {
         std::cout << data.isbn() << std::endl;
@@ -348,6 +350,253 @@ void q_10_21() {
     while (!lmb());
 }
 
+/**
+ * 10.3.4节练习
+ * 练习10.22：重写统计长度小于等于6的单词数量的程序，使用函数代替
+ * lambda。
+ */
+inline bool isLesserThanOrEqualTo6(const std::string &s, int sz) {
+    return s.size() <= sz;
+}
+
+void q_10_22() {
+    std::vector<std::string> authors{"Mooophy", "pezy", "Queequeg90", "shbling", "evan617"};
+    auto count = std::count_if(authors.cbegin(), authors.cend(),
+                               std::bind(isLesserThanOrEqualTo6, std::placeholders::_1, 6));
+    std::cout << count << std::endl;
+}
+
+/**
+ * 练习10.24：给定一个string，使用bind和check_size在一个int的vector中
+ * 查找第一个大于string长度的值。
+ */
+inline bool check_size(const std::string &s, const std::string::size_type sz) {
+    return s.size() < sz;
+}
+
+void q_10_24() {
+    std::string s = "hello";
+    std::vector<int> iv = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    auto itr = std::find_if(iv.cbegin(), iv.cend(), std::bind(check_size, std::ref(s), std::placeholders::_1));
+    std::cout << *itr << std::endl;
+}
+
+/**
+ * 练习10.25：在10.3.2节（第349页）的练习中，编写了一个使用partition
+ * 的biggies版本。使用check_size和bind重写此函数。
+ */
+void elimdups(std::vector<std::string> &vs) {
+    std::sort(vs.begin(), vs.end());
+    auto unique_end = std::unique(vs.begin(), vs.end());
+    vs.erase(unique_end, vs.cend());
+}
+
+bool check_size_10_25(const std::string &s, std::string::size_type sz) {
+    return s.size() >= sz;
+}
+
+void biggies(std::vector<std::string> &words, std::vector<std::string>::size_type sz) {
+    elimDups(words);
+    auto iter = std::stable_partition(words.begin(), words.end(),
+                                      std::bind(check_size_10_25, std::placeholders::_1, sz));
+    std::for_each(words.begin(), iter, [](const std::string s) {
+        std::cout << s << " ";
+    });
+}
+
+void q_10_25() {
+    std::vector<std::string> v{
+            "the", "quick", "red", "fox", "jumps", "over", "the", "slow", "red", "turtle"
+    };
+    biggies(v, 4);
+}
+
+/**
+ * 练习10.27：除了unique（参见10.2.3节，第343页）之外，标准库还定义
+ * 了名为unique_copy的函数，它接受第三个迭代器，表示拷贝不重复元素
+ * 的目的位置。编写一个程序，使用unique_copy将一个vector中不重复的
+ * 元素拷贝到一个初始为空的list中。
+ */
+void q_10_27() {
+    std::vector<int> iv = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::list<int> il;
+    std::unique_copy(iv.cbegin(), iv.cend(), std::back_inserter(il));
+
+    for (auto i: il) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+}
+
+/**
+ * 练习10.28：一个vector中保存1到9，将其拷贝到三个其他容器中。分别
+ * 使用inserter、back_inserter和front_inserter将元素添加到三个容器中。对
+ * 每种inserter，估计输出序列是怎样的，运行程序验证你的估计是否正确。
+ */
+void q_10_28() {
+    std::vector<int> iv = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::list<int> il1;
+    std::list<int> il2;
+    std::list<int> il3;
+
+    std::copy(iv.cbegin(), iv.cend(), std::inserter(il1, il1.begin()));
+    std::copy(iv.cbegin(), iv.cend(), std::back_inserter(il2));
+    std::copy(iv.cbegin(), iv.cend(), std::front_inserter(il3));
+
+    std::cout << "insert list: ";
+    for (auto i: il1) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "back_inserter list: ";
+    for (auto i: il2) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "front_inserter list: ";
+    for (auto i: il3) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+}
+
+/**
+ * 10.4.2节练习
+ * 练习10.29：编写程序，使用流迭代器读取一个文本文件，存入一个
+ * vector中的string里。
+ */
+void q_10_29() {
+    std::ifstream ifs("./data.txt");
+    std::istream_iterator<std::string> is_itr(ifs);
+    std::istream_iterator<std::string> eof;
+    std::vector<std::string> sv;
+    std::copy(is_itr, eof, std::back_inserter(sv));
+
+    std::copy(sv.cbegin(), sv.cend(), std::ostream_iterator<std::string>(std::cout, "\n"));
+}
+
+/**
+ * 练习10.30：使用流迭代器、sort和copy从标准输入读取一个整数序列，
+ * 将其排序，并将结果写到标准输出。
+ */
+void q_10_30() {
+    std::vector<int> iv;
+    std::istream_iterator<int> is_itr(std::cin);
+    std::copy(is_itr, std::istream_iterator<int>(), std::back_inserter(iv));
+    std::sort(iv.begin(), iv.end());
+    std::copy(iv.cbegin(), iv.cend(), std::ostream_iterator<int>(std::cout, " "));
+}
+
+/**
+ * 练习10.31：修改前一题的程序，使其只打印不重复的元素。你的程序
+ * 应使用unique_copy（参见10.4.1节，第359页）。
+ */
+void q_10_31() {
+    std::vector<int> iv;
+    std::istream_iterator<int> is_itr(std::cin);
+    std::copy(is_itr, std::istream_iterator<int>(), std::back_inserter(iv));
+    std::sort(iv.begin(), iv.end());
+    std::unique_copy(iv.cbegin(), iv.cend(), std::ostream_iterator<int>(std::cout, " "));
+}
+
+/**
+ * 练习10.32：重写1.6节（第21页）中的书店程序，使用一个vector保存交
+ * 易记录，使用不同算法完成处理。使用sort和10.3.1节（第345页）中的
+ * compareIsbn函数来排序交易记录，然后使用find和accumulate求和。
+ */
+inline bool compareIsbn_10_32(const Sales_item &lsd, const Sales_item &rsd) {
+    return lsd.isbn().size() < rsd.isbn().size();
+}
+
+void q_10_32() {
+    std::istream_iterator<Sales_item> in_iter(std::cin), in_eof;
+    std::vector<Sales_item> vec;
+
+    while (in_iter != in_eof) {
+        vec.push_back(*in_iter++);
+    }
+
+    std::sort(vec.begin(), vec.end(), compareIsbn_10_32);
+
+    for (auto beg = vec.begin(), end = vec.begin(); beg != vec.end(); beg = end) {
+        end = std::find_if(beg, vec.end(), [&beg](const Sales_item &item) -> bool {
+            return item.isbn() != beg->isbn();
+        });
+        std::cout << std::accumulate(beg, end, Sales_item(beg->isbn())) << std::endl;
+    }
+}
+
+/**
+ * 练习10.33：编写程序，接受三个参数：一个输入文件和两个输出文件
+ * 的文件名。输入文件保存的应该是整数。使用istream_iterator读取输入
+ * 文件。使用ostream_iterator将奇数写入第一个输出文件，每个值之后都
+ * 跟一个空格。将偶数写入第二个输出文件，每个值都独占一行。
+ */
+void q_10_33(int argc, char **argv) {
+//    if (argc != 4) return;
+    std::string origin_file = "origin.txt";
+    std::string even_file = "even.txt";
+    std::string odd_file = "odd.txt";
+
+    std::ifstream origin_ifs(origin_file);
+    std::ofstream even_ofs(even_file), odd_ofs(odd_file);
+    if (!origin_ifs || !even_ofs || !odd_ofs) {
+        return;
+    }
+
+    std::istream_iterator<int> is_itr(origin_ifs), eof;
+    std::ostream_iterator<int> even_os_itr(even_ofs, " "), odd_os_itr(odd_ofs, " ");
+
+    std::for_each(is_itr, eof, [&odd_os_itr, &even_os_itr](int v) {
+        if (v % 2 == 0) {
+            *even_os_itr++ = v;
+        } else {
+            *odd_os_itr++ = v;
+        }
+    });
+}
+
+/**
+ * 10.4.3节练习
+ * 练习10.34：使用reverse_iterator逆序打印一个vector。
+ */
+void q_10_34() {
+    std::vector<int> iv = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::copy(iv.rbegin(), iv.rend(), std::ostream_iterator<int>(std::cout, " "));
+}
+
+/**
+ * 练习10.35：使用普通迭代器逆序打印一个vector。
+ */
+void q_10_35() {
+    std::vector<int> iv = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    for (auto itr = iv.cend() - 1; itr != iv.begin() - 1; --itr) {
+        std::cout << *itr << " ";
+    }
+}
+
+/**
+ * 练习10.36：使用find在一个int的list中查找最后一个值为0的元素。
+ */
+void q_10_36() {
+    std::list<int> il = {0, 1, 2, 3, 0, 4, 5, 6, 0, 7, 8, 9};
+    auto itr = std::find(il.crbegin(), il.crend(), 0);
+    std::cout << std::distance(itr, il.crend()) << std::endl;
+}
+
+/**
+ * 练习10.37：给定一个包含10个元素的vector，将位置3到7之间的元素按逆序拷贝
+ * 到一个list中。
+ */
+void q_10_37() {
+    std::vector<int> iv = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::list<int> il;
+    std::copy(iv.rend() - 7, iv.rend() - 2, std::back_inserter(il));
+    std::copy(il.cbegin(), il.cend(), std::ostream_iterator<int>(std::cout, " "));
+}
+
 int main(int args, char **argv) {
 //    q_10_1();
 //    q_10_2();
@@ -364,6 +613,20 @@ int main(int args, char **argv) {
 //    q_10_18();
 //    q_10_19();
 //    q_10_20();
-    q_10_21();
+//    q_10_21();
+//    q_10_22();
+//    q_10_24();
+//    q_10_25();
+//    q_10_27();
+//    q_10_28();
+//    q_10_29();
+//    q_10_30();
+//    q_10_31();
+//    q_10_32();
+//    q_10_33(args, argv);
+//    q_10_34();
+//    q_10_35();
+//    q_10_36();
+    q_10_37();
     return 0;
 }
