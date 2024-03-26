@@ -7,6 +7,7 @@
 #include <list>
 #include <deque>
 #include <forward_list>
+#include <fstream>
 
 /**
  * 练习9.2：定义一个list对象，其元素类型是int的deque。
@@ -343,10 +344,45 @@ void q_9_42() {
  * 程序，用它替换通用的简写形式，如，将"tho"替换为"though"，
  * 将"thru"替换为"through"。
  */
+void replace_with(std::string &s, const std::string &oldVal, const std::string &newVal) {
+    for (auto i = s.cbegin(); i != s.cend() - oldVal.size();) {
+        if (oldVal == std::string(i, i + oldVal.size())) {
+            i = s.erase(i, i + oldVal.size());
+            i = s.insert(i, newVal.cbegin(), newVal.cend());
+            i += newVal.size();
+        } else {
+            ++i;
+        }
+    }
+}
+
+void q_9_43() {
+    std::string str = "To drive straight thru is a foolish, tho courageous act.";
+    replace_with(str, "tho", "though");
+    replace_with(str, "thru", "through");
+    std::cout << str << std::endl;
+}
 
 /**
  * 练习9.44：重写上一题的函数，这次使用一个下标和replace。
  */
+void replace_with_index(std::string &s, const std::string &oldVal, const std::string &newVal) {
+    for (decltype(s.size()) i = 0; i < s.size() - oldVal.size();) {
+        if (s[i] == oldVal[0] && oldVal == s.substr(i, oldVal.size())) {
+            s.replace(i, oldVal.size(), newVal);
+            i += newVal.size();
+        } else {
+            ++i;
+        }
+    }
+}
+
+void q_9_44() {
+    std::string str = "To drive straight thru is a foolish, tho courageous act.";
+    replace_with_index(str, "tho", "though");
+    replace_with_index(str, "thru", "through");
+    std::cout << str << std::endl;
+}
 
 /**
  * 练习9.45：编写一个函数，接受一个表示名字的string参数和两个分别表
@@ -354,11 +390,146 @@ void q_9_42() {
  * 代器及insert和append函数将前缀和后缀添加到给定的名字中，将生成的
  * 新string返回。
  */
+std::string &add_pre_and_suffix(std::string &name, const std::string &prefix, const std::string &suffix) {
+    name.insert(0, prefix);
+    name.append(suffix);
+    return name;
+}
+
+void q_9_45() {
+    std::string name("Wang");
+    std::cout << add_pre_and_suffix(name, "Mr.", ", Jr.") << std::endl;
+}
 
 /**
  * 练习9.46：重写上一题的函数，这次使用位置和长度来管理string，并只
  * 使用insert。
  */
+std::string &add_pre_and_suffix_by_index(std::string &name, const std::string &prefix, const std::string &suffix) {
+    name.insert(0, prefix);
+    name.insert(name.size(), suffix);
+    return name;
+}
+
+void q_9_46() {
+    std::string name("Wang");
+    std::cout << add_pre_and_suffix_by_index(name, "Mr.", ", Jr.") << std::endl;
+}
+
+/**
+ * 9.5.3节练习
+ * 练习9.47：编写程序，首先查找string "ab2c3d7R4E6"中的每个数字字
+ * 符，然后查找其中每个字母字符。编写两个版本的程序，第一个要使用
+ * find_first_of，第二个要使用find_first_not_of。
+ */
+void q_9_47() {
+    std::string str = "ab2c3d7R4E6";
+    std::string numbers = "0123456789";
+    for (size_t pos = 0; pos < str.size(); ++pos) {
+        pos = str.find_first_of(numbers, pos);
+        if (pos == std::string::npos) {
+            break;
+        }
+        std::cout << str[pos] << " ";
+    }
+
+    std::cout << std::endl;
+
+    for (size_t pos = 0; pos < str.size(); ++pos) {
+        pos = str.find_first_not_of(numbers, pos);
+        if (pos == std::string::npos) {
+            break;
+        }
+        std::cout << str[pos] << " ";
+    }
+    std::cout << std::endl;
+}
+
+/**
+ * 练习9.49：如果一个字母延伸到中线之上，如d或f，则称其有上出头部
+ * 分（ascender）。如果一个字母延伸到中线之下，如p或g，则称其有下
+ * 出头部分（descender）。编写程序，读入一个单词文件，输出最长的既
+ * 不包含上出头部分，也不包含下出头部分的单词。
+ */
+void q_9_49() {
+    std::string targetChar = "aceimnorsuvwxz";
+    std::ifstream ifs("./data.txt");
+    if (!ifs) return;
+    std::string longest;
+
+    std::string cur;
+    while (ifs >> cur) {
+        if (cur.find_first_not_of(targetChar) == std::string::npos) {
+            if (cur.size() > longest.size()) {
+                longest = cur;
+            }
+        }
+    }
+    std::cout << longest << std::endl;
+}
+
+void q_9_49_answer() {
+    std::ifstream ifs("./data.txt");
+    if (!ifs) return;
+
+    std::string longest;
+    auto update_with = [&longest](std::string const &curr) {
+        if (std::string::npos == curr.find_first_not_of("aceimnorsuvwxz"))
+            longest = longest.size() < curr.size() ? curr : longest;
+    };
+    for (std::string curr; ifs >> curr; update_with(curr));
+    std::cout << longest << std::endl;
+}
+
+/**
+ * 9.5.5节练习
+ * 练习9.50：编写程序处理一个vector<string>，其元素都表示整型值。计
+ * 算vector中所有元素之和。修改程序，使之计算表示浮点值的string之和。
+ */
+
+/**
+ * 练习9.51：设计一个类，它有三个unsigned成员，分别表示年、月和
+ * 日。为其编写构造函数，接受一个表示日期的string参数。你的构造函
+ * 数应该能处理不同数据格式，如January 1，1900、1/1/1990、Jan 1 1900
+ * 等。
+ */
+
+/**
+ * 9.6节练习
+ * 练习9.52：使用stack处理括号化的表达式。当你看到一个左括号，将其
+ * 记录下来。当你在一个左括号之后看到一个右括号，从stack中pop对
+ * 象，直至遇到左括号，将左括号也一起弹出栈。然后将一个值（括号内
+ * 的运算结果）push到栈中，表示一个括号化的（子）表达式已经处理完
+ * 毕，被其运算结果所替代。
+ */
+void q_9_52() {
+    using std::string;
+    using std::cout;
+    using std::endl;
+    using std::stack;
+    string expression{"This is (pezy)."};
+
+    bool hasLefBracket = false;
+    stack<char> charStack;
+    for (size_t pos = 0; pos < expression.size(); ++pos) {
+        if (expression[pos] == '(') {
+            hasLefBracket = true;
+            continue;
+        } else if (expression[pos] == ')') {
+            hasLefBracket = false;
+        }
+        if (hasLefBracket) {
+            charStack.push(expression[pos]);
+        }
+    }
+    string repstr;
+    while (!charStack.empty()) {
+        repstr += charStack.top();
+        charStack.pop();
+    }
+    expression.replace(expression.find("(") + 1, repstr.size(), repstr);
+    cout << expression << endl;
+}
 
 int main(int argc, char **argv) {
 //    q_9_4();
@@ -375,5 +546,13 @@ int main(int argc, char **argv) {
 //    q_9_27();
 //    q_9_27_new();
 //    q_9_28();
-    q_9_41();
+//    q_9_41();
+//    q_9_43();
+//    q_9_44();
+//    q_9_45();
+//    q_9_46();
+//    q_9_47();
+//    q_9_49();
+//    q_9_49_answer();
+    q_9_52();
 }
