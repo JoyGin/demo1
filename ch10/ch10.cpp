@@ -399,7 +399,7 @@ void biggies(std::vector<std::string> &words, std::vector<std::string>::size_typ
     elimDups(words);
     auto iter = std::stable_partition(words.begin(), words.end(),
                                       std::bind(check_size_10_25, std::placeholders::_1, sz));
-    std::for_each(words.begin(), iter, [](const std::string s) {
+    std::for_each(words.begin(), iter, [](const std::string &s) {
         std::cout << s << " ";
     });
 }
@@ -597,6 +597,21 @@ void q_10_37() {
     std::copy(il.cbegin(), il.cend(), std::ostream_iterator<int>(std::cout, " "));
 }
 
+/**
+ * 10.6节练习
+ * 练习10.42：使用list代替vector重新实现10.2.3节（第343页）中的去除重
+ * 复单词的程序。
+ */
+void q_10_42() {
+    std::list<std::string> ls{
+            "the", "quick", "red", "fox", "jumps", "over", "the", "slow", "red", "turtle"
+    };
+    ls.sort();
+    ls.unique();
+
+    std::copy(ls.cbegin(), ls.cend(), std::ostream_iterator<std::string>(std::cout, " "));
+}
+
 int main(int args, char **argv) {
 //    q_10_1();
 //    q_10_2();
@@ -627,6 +642,7 @@ int main(int args, char **argv) {
 //    q_10_34();
 //    q_10_35();
 //    q_10_36();
-    q_10_37();
+//    q_10_37();
+    q_10_42();
     return 0;
 }
