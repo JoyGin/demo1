@@ -9,6 +9,7 @@
 #include <fstream>
 #include <algorithm>
 #include <netdb.h>
+#include <vector>
 #include "Sales_data.h"
 
 /**
@@ -279,6 +280,76 @@ void q_11_23() {
     }
 }
 
+/**
+ * 练习11.28：对一个string到int的vector的map，定义并初始化一个变量来
+ * 保存在其上调用find所返回的结果。
+ */
+void q_11_28() {
+    std::map<std::string, std::vector<int>> m;
+    std::map<std::string, std::vector<int>>::iterator it = m.find("key");
+}
+
+/**
+ * 练习11.31
+ * 编写程序，定义一个作者及其作品的multimap。使用find在multimap中查找一个元素并用erase删除它。确保你的程序在元素不在map 中时也能正常运行。
+ */
+void q_11_31() {
+    std::multimap<std::string, std::string> authors{
+            {"alan", "DMA"},
+            {"pezy", "LeetCode"},
+            {"alan", "CLRS"},
+            {"wang", "FTP"},
+            {"pezy", "CP5"},
+            {"wang", "CPP-Concurrency"}};
+
+    std::string author = "pezy";
+    std::string work = "CP5";
+
+    auto count = authors.count(author);
+    auto cur = authors.find(author);
+    while (count) {
+        if (cur->second == work) {
+            authors.erase(cur);
+            break;
+        } else {
+            --count;
+            ++cur;
+        }
+    }
+
+    for (auto item: authors) {
+        std::cout << item.first << ": " << item.second << std::endl;
+    }
+}
+
+/**
+ * 练习11.32
+ * 使用上一题定义的multimap编写一个程序，按字典序打印作者列表和他们的作品。
+ */
+void q_11_32() {
+    std::multimap<std::string, std::string> authors{
+            {"alan", "DMA"},
+            {"pezy", "LeetCode"},
+            {"alan", "CLRS"},
+            {"wang", "FTP"},
+            {"pezy", "CP5"},
+            {"wang", "CPP-Concurrency"}};
+
+    std::map<std::string, std::multiset<std::string>> order_authors;
+
+    for (const auto &author: authors) {
+        order_authors[author.first].insert(author.second);
+    }
+
+    for (const auto &author: order_authors) {
+        std::cout << author.first << ": ";
+        for (const auto &book: author.second) {
+            std::cout << book << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 int main() {
 //    q_11_3();
 //    q_11_4();
@@ -288,6 +359,8 @@ int main() {
 //    q_11_13();
 //    q_11_14();
 //    q_11_20();
-    q_11_23();
+//    q_11_23();
+//    q_11_31();
+    q_11_32();
     return 0;
 }
