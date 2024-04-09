@@ -23,4 +23,6 @@ add_executable(ch09 ch09/ch09.cpp)
 
 add_executable(ch10 ch10/ch10.cpp ch10/Sales_data.h ch10/Sales_data.cpp ch10/Sales_item.h)
 
-add_executable(ch11 ch01/Sales_item.h ch11/cn11.cpp ch11/Sales_data.h ch11/Sales_data.cpp )
+add_executable(ch11 ch01/Sales_item.h ch11/cn11.cpp ch11/Sales_data.h ch11/Sales_data.cpp)
+
+add_executable(ch12 ch12/ch12.cpp ch12/StrBlob.cpp ch12/StrBlob.h)
