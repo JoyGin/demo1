@@ -7,6 +7,7 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <algorithm>
 #include <netdb.h>
 #include <vector>
@@ -350,6 +351,119 @@ void q_11_32() {
     }
 }
 
+/**
+ * 11.3.6节练习
+ * 练习11.33：实现你自己版本的单词转换程序。
+ */
+std::map<std::string, std::string> buildMap(std::ifstream &ifs) {
+    std::map<std::string, std::string> word_map;
+    std::string line;
+    while (std::getline(ifs, line)) {
+        auto index = line.find_first_of(' ');
+        if (index != std::string::npos) {
+            std::string key = line.substr(0, index);
+            std::string value = line.substr(index + 1);
+            word_map[key] = value;
+        }
+    }
+    return word_map;
+}
+
+std::string transform(const std::map<std::string, std::string> &word_map, const std::string &word) {
+    auto itr = word_map.find(word);
+    if (itr != word_map.cend()) {
+        return itr->second;
+    } else {
+        return word;
+    }
+}
+
+void word_transform(std::ifstream &ifs_word_map, std::ifstream &ifs_origin_content) {
+    auto word_map = buildMap(ifs_word_map);
+    std::string text;
+    while (std::getline(ifs_origin_content, text)) {
+        std::istringstream iss(text);
+        std::string word;
+        bool isFirstWord = true;
+        while (iss >> word) {
+            if (isFirstWord) {
+                isFirstWord = false;
+            } else {
+                std::cout << " ";
+            }
+            std::cout << transform(word_map, word);
+        }
+        std::cout << std::endl;
+    }
+}
+
+void q_11_33() {
+    // expected answer
+//    where are you
+//    why dont you send me a picture
+//    okay? thanks! later
+    std::ifstream ifs_word_map("./word_map.txt");
+    std::ifstream ifs_origin_content("./origin_content.txt");
+
+    if (ifs_word_map && ifs_origin_content) {
+        word_transform(ifs_word_map, ifs_origin_content);
+    } else {
+        std::cerr << "can't open file" << std::endl;
+    }
+}
+
+/**
+ * 练习11.38：用unordered_map重写单词计数程序（参见11.1节，第375
+ * 页）和单词转换程序（参见11.3.6节，第391页）。
+ */
+void q_11_38_word_count() {
+    std::unordered_map<std::string, int> word_count;
+    for (std::string word; std::cin >> word;) {
+        ++word_count[word];
+    }
+
+    for (const auto &word: word_count) {
+        std::cout << word.first << ": " << word.second << std::endl;
+    }
+}
+
+void q_11_38_transform() {
+    std::ifstream ifs_word_map("./word_map.txt");
+    std::ifstream ifs_origin_content("./origin_content.txt");
+    if (ifs_word_map && ifs_origin_content) {
+
+        // 获取map
+        std::unordered_map<std::string, std::string> word_map;
+        std::string line;
+        while (std::getline(ifs_word_map, line)) {
+            size_t index = line.find(' ');
+            if (index != std::string::npos) {
+                std::string key = line.substr(0, index);
+                std::string value = line.substr(index + 1);
+                word_map[key] = value;
+            }
+        }
+
+        // 转换
+        while (std::getline(ifs_origin_content, line)) {
+            std::istringstream iss(line);
+            std::string word;
+            while (iss >> word) {
+                auto itr = word_map.find(word);
+                if (itr != word_map.cend()) {
+                    std::cout << itr->second << " ";
+                } else {
+                    std::cout << word << " ";
+                }
+            }
+            std::cout << std::endl;
+        }
+
+    } else {
+        std::cerr << "can't open file." << std::endl;
+    }
+}
+
 int main() {
 //    q_11_3();
 //    q_11_4();
@@ -361,6 +475,9 @@ int main() {
 //    q_11_20();
 //    q_11_23();
 //    q_11_31();
-    q_11_32();
+//    q_11_32();
+//    q_11_33();
+//    q_11_38_word_count();
+//    q_11_38_transform();
     return 0;
 }
