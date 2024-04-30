@@ -60,7 +60,75 @@ void q_12_7() {
     print_vector(*vec);
 }
 
+/**
+ * 12.1.4节练习
+ * 练习12.14：编写你自己版本的用shared_ptr管理connection的函数。
+ */
+struct connection {
+    std::string ip;
+    int port;
+
+    connection(std::string i, int p) : ip(i), port(p) {
+        std::cout << "constructor" << std::endl;
+    }
+
+    connection(connection &conn) : connection(conn.ip, conn.port) {
+        std::cout << "constructor dup" << std::endl;
+    }
+};
+
+struct destination {
+    std::string ip;
+    int port;
+
+    destination(std::string i, int p) : ip(i), port(p) {}
+};
+
+connection connect(destination &pDest) {
+    std::shared_ptr<connection> pConn(new connection(pDest.ip, pDest.port));
+    std::cout << "creating connection(" << pConn.use_count() << ")" << std::endl;
+    return *pConn;
+}
+
+void disconnect(connection &voi) {
+    std::cout << "connection close(" << voi.ip << ":" << voi.port << ")" << std::endl;
+}
+
+void end_connection(connection *pConn) {
+    disconnect(*pConn);
+}
+
+void f(destination &d) {
+    connection conn = connect(d);
+    std::shared_ptr<connection> pConn(&conn, end_connection);
+    std::cout << "connecting now(" << pConn.use_count() << ")" << std::endl;
+}
+
+void q_12_14() {
+    destination dest("127.0.0.1", 8888);
+    f(dest);
+}
+
+/**
+ * 练习12.15：重写第一题的程序，用lambd（a参见10.3.2节，第346页）
+ * 代替end_connection函数。
+ */
+void f2(destination &d) {
+    connection conn = connect(d);
+    std::shared_ptr<connection> pConn(&conn, [](connection *pConn) {
+        disconnect(*pConn);
+    });
+    std::cout << "connecting now(" << pConn.use_count() << ")" << std::endl;
+}
+
+void q_12_15() {
+    destination dest("127.0.0.1", 8888);
+    f2(dest);
+}
+
 int main() {
 //    q_12_6();
-    q_12_7();
+//    q_12_7();
+//    q_12_14();
+    q_12_15();
 }
