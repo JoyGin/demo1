@@ -4,7 +4,7 @@
 
 #include "StrBlob.h"
 
-void StrBlob::push_back(const std::string &str) {
+void StrBlob::push_back(const std::string &str) const {
     data->push_back(str);
 }
 
@@ -31,4 +31,24 @@ const std::string &StrBlob::front() const {
 const std::string &StrBlob::back() const {
     check(0, "back const on empty StrBlob");
     return data->back();
+}
+
+StrBlobPtr StrBlob::begin() const {
+    return StrBlobPtr(*this);
+}
+
+StrBlobPtr StrBlob::end() const {
+    return StrBlobPtr(*this, size());
+}
+
+bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs) {
+    if (!lhs.wptr.expired() && !rhs.wptr.expired()) {
+        return (lhs.wptr.lock() == rhs.wptr.lock()) && (lhs.curr == rhs.curr);
+    } else {
+        return false;
+    }
+}
+
+bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs) {
+    return !(lhs == rhs);
 }
