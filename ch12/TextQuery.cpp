@@ -1,44 +1,42 @@
 //
-// Created by 王泽鑫 on 2024/5/7.
+// Created by 王泽鑫 on 2024/5/8.
 //
 
 #include "TextQuery.h"
-#include <memory>
 #include <sstream>
 
-TextQuery::TextQuery(std::ifstream &infile) : file(new std::vector<std::string>) {
-    std::string line;
-    while (getline(infile, line)) {
+TextQuery::TextQuery(std::ifstream &infile) : file(std::make_shared<std::vector<std::string>>()) {
+    line_no n = 0;
+    for (std::string line; getline(infile, line); ++n) {
         file->push_back(line);
-        int n = file->size() - 1;
         std::istringstream iss(line);
         std::string word;
         while (iss >> word) {
             if (!wm[word]) {
                 wm[word] = std::make_shared<std::set<line_no>>();
             }
-            (*wm[word]).insert(n);
+            wm[word]->insert(n);
         }
     }
 }
 
 QueryResult TextQuery::query(const std::string &word) const {
-    static auto nodata = std::make_shared<std::set<line_no>>();
-    auto loc = wm.find(word);
-    if (loc == wm.end()) {
+    static std::shared_ptr<std::set<line_no>> nodata = std::make_shared<std::set<line_no>>();
+    auto found = wm.find(word);
+    if (found == wm.end()) {
         return QueryResult(word, nodata, file);
     } else {
-        return QueryResult(word, loc->second, file);
+        return QueryResult(word, found->second, file);
     }
 }
 
-QueryResult::QueryResult(std::string s, std::shared_ptr<std::set<TextQuery::line_no>> l,
+QueryResult::QueryResult(const std::string &s, std::shared_ptr<std::set<TextQuery::line_no>> l,
                          std::shared_ptr<std::vector<std::string>> f) : sought(s), lines(l), file(f) {}
 
 std::ostream &print(std::ostream &os, const QueryResult &qr) {
-    os << qr.sought << "occur " << qr.lines->size() << " time" << (!qr.lines->empty() ? "s" : "") << std::endl;
-    for (auto &num: *qr.lines) {
-        os << "\t(line " << num + 1 << " )" << *(qr.file->begin() + num) << std::endl;
+    os << qr.sought << "occurs " << qr.lines->size() << " time" << (qr.lines->size() > 1 ? "s" : "") << std::endl;
+    for (auto &n : *qr.lines) {
+        os << "\t(n " << n + 1 << " )" << (*(qr.file))[n] << std::endl;
     }
     return os;
 }

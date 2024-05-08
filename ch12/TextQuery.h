@@ -1,16 +1,16 @@
 //
-// Created by 王泽鑫 on 2024/5/7.
+// Created by 王泽鑫 on 2024/5/8.
 //
 
 #ifndef DEMO1_TEXTQUERY_H
 #define DEMO1_TEXTQUERY_H
 
+#include <memory>
 #include <vector>
 #include <string>
-#include <memory>
-#include <fstream>
 #include <map>
 #include <set>
+#include <fstream>
 
 class QueryResult;
 
@@ -31,7 +31,7 @@ class QueryResult {
 public:
     friend std::ostream &print(std::ostream &os, const QueryResult &qr);
 
-    QueryResult(std::string s, std::shared_ptr<std::set<TextQuery::line_no>> l,
+    QueryResult(const std::string &s, std::shared_ptr<std::set<TextQuery::line_no>> l,
                 std::shared_ptr<std::vector<std::string>> f);
 
 private:

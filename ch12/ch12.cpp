@@ -7,6 +7,8 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+#include <set>
+#include <map>
 #include "StrBlob.h"
 #include "TextQuery.h"
 
