@@ -6,7 +6,9 @@
 #include <iostream>
 #include <memory>
 #include <fstream>
+#include <sstream>
 #include "StrBlob.h"
+#include "TextQuery.h"
 
 /**
  * 12.1.2节练习
@@ -194,6 +196,175 @@ void q_12_22() {
     }
 }
 
+class ClassA {
+    friend bool operator==(const ClassA &l, const ClassA &r);
+
+public:
+    explicit ClassA(int v) : val(v) {}
+
+//    bool operator==(const ClassA &a) const {
+//        std::cout << "member function" << std::endl;
+//        return val == a.val;
+//    }
+
+private:
+    int val;
+};
+
+bool operator==(const ClassA &l, const ClassA &r) {
+    std::cout << "friend function" << std::endl;
+    return l.val == r.val;
+}
+
+void testFriendAndMemberFunc() {
+    ClassA a(1);
+    const ClassA b(1);
+    if (a == b) {
+
+    } else {
+
+    }
+}
+
+/**
+ * 练习12.23：编写一个程序，连接两个字符串字面常量，将结果保存在
+ * 一个动态分配的char数组中。重写这个程序，连接两个标准库string对
+ * 象。
+ */
+void q_12_23() {
+    char *c1 = "Hello ";
+    char *c2 = "World";
+    size_t clen = strlen(c1) + strlen(c2) + 1;
+    char *cr = new char[clen];
+    strcat(cr, c1);
+    strcat(cr, c2);
+    std::cout << cr << std::endl;
+
+    std::string s1 = "Hello ";
+    std::string s2 = "World";
+    strcpy(cr, (s1 + s2).c_str());
+    std::cout << cr << std::endl;
+
+    delete[] cr;
+}
+
+/**
+ * 练习12.24：编写一个程序，从标准输入读取一个字符串，存入一个动
+ * 态分配的字符数组中。描述你的程序如何处理变长输入。测试你的程
+ * 序，输入一个超出你分配的数组长度的字符串。
+ */
+void q_12_24() {
+    std::cout << "How long do you want the string? ";
+    int size{0};
+    std::cin >> size;
+    char *input = new char[size + 1]();
+    std::cin.ignore();
+    std::cout << "input the string: ";
+    std::cin.get(input, size + 1);
+    std::cout << input;
+    delete[] input;
+}
+
+class NoDefaultConClass {
+public:
+    explicit NoDefaultConClass(int v) : val(v) {}
+
+private:
+    int val;
+};
+
+void testNewNoDefault() {
+//    NoDefaultConClass *pa = new NoDefaultConClass[5]();
+}
+
+/**
+ * 12.2.2节练习
+ * 练习12.26：用allocator重写第427页中的程序。
+ */
+void q_12_26() {
+    int n = 5;
+    std::allocator<std::string> alloc;
+    std::string *p = alloc.allocate(n);
+    std::string string;
+    std::string *q = p;
+    while (q != p + n && std::cin >> string) {
+        alloc.construct(q++, "hello");
+    }
+
+    q = p;
+    while (q != p + n) {
+        std::cout << *q++ << std::endl;
+    }
+
+    q = p;
+    while (q != p + n) {
+        alloc.destroy(q++);
+    }
+
+    alloc.deallocate(p, n);
+}
+
+/**
+ * 12.3.1节练习
+ * 练习12.27：TextQuery和QueryResult类只使用了我们已经介绍过的语言
+ * 和标准库特性。不要提前看后续章节内容，只用已经学到的知识对这两
+ * 个类编写你自己的版本。
+ */
+void runQueries(std::ifstream &infile) {
+    TextQuery tq(infile);
+    while (true) {
+        std::cout << "enter word to look for, or q to quit: ";
+        std::string s;
+        if (!(std::cin >> s) || s == "q") {
+            break;
+        }
+        print(std::cout, tq.query(s));
+    }
+}
+
+void q_12_27() {
+    std::ifstream ifs("data.txt");
+    runQueries(ifs);
+}
+
+/**
+ * 练习12.28：编写程序实现文本查询，不要定义类来管理数据。你的程
+ * 序应该接受一个文件，并与用户交互来查询单词。使用vector、map和
+ * set容器来保存来自文件的数据并生成查询结果。
+ */
+void q_12_28() {
+    std::ifstream ifs("data.txt");
+    std::vector<std::string> file;
+    std::string line;
+    std::map<std::string, std::set<decltype(file.size())>> wm;
+    while (getline(ifs, line)) {
+        file.push_back(line);
+        decltype(file.size()) n = file.size() - 1;
+        std::istringstream iss(line);
+        std::string word;
+        while (iss >> word) {
+            wm[word].insert(n);
+        }
+    }
+    while (true) {
+        std::cout << "enter word to look for, or q to quit: ";
+        std::string s;
+        if (!(std::cin >> s) || s == "q") {
+            break;
+        }
+        auto found = wm.find(s);
+        if (found == wm.end()) {
+            std::cout << s << " occurs 0 time" << std::endl;
+        } else {
+            std::cout << s << " occurs " << found->second.size() << (found->second.size() > 1 ? " times" : " time")
+                      << std::endl;
+            for (auto &i: found->second) {
+                std::cout << "\t(line " << i + 1 << " )" << file[i] << std::endl;
+            }
+        }
+    }
+}
+
 int main() {
 //    q_12_6();
 //    q_12_7();
@@ -203,5 +374,11 @@ int main() {
 //    test_share_ptr_when_null();
 //    test_share_ptr_equal();
 //    q_12_20();
-    q_12_22();
+//    q_12_22();
+//    testFriendAndMemberFunc();
+//    q_12_23();
+//    q_12_24();
+//    q_12_26();
+//    q_12_27();
+    q_12_28();
 }
