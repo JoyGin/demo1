@@ -3,6 +3,9 @@ project(demo1)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# 为整个项目添加地址清洗器选项
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+
 add_executable(demo1 main.cpp)
 
 add_executable(ch01 ch01/Sales_item.h ch01/ch01.cpp)
@@ -36,3 +39,5 @@ add_executable(testptrace ptrace/testptrace.cpp)
 add_executable(testsignal signal/testsignal.cpp)
 
 add_executable(testAttrCtor attr_constructor/testAttrCtor.cpp)
+
+add_executable(ch13 ch13/ch13.cpp)

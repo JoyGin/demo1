@@ -58,7 +58,7 @@ void q_11_4() {
 void q_11_7() {
     std::map<std::string, std::vector<std::string >> family;
     std::string last_name;
-    std::cout << "Last name: \n";
+    std::cout << "Last _name: \n";
     while (std::cin >> last_name && last_name != "@q") {
         std::string first_name;
         std::cout << "|-Children's names:\n";
@@ -76,7 +76,7 @@ void q_11_7() {
     }
 
 //    std::map<std::string, std::vector<std::string>> m;
-//    for (std::string ln; std::cout << "Last name:\n", std::cin >> ln && ln != "@q";)
+//    for (std::string ln; std::cout << "Last _name:\n", std::cin >> ln && ln != "@q";)
 //        for (std::string cn; std::cout << "|-Children's names:\n", std::cin >> cn && cn != "@q";)
 //            m[ln].push_back(cn);
 //
@@ -212,7 +212,7 @@ private:
 
 void q_11_14() {
     Families families;
-    auto msg = "Please enter last name, first name and birthday:\n";
+    auto msg = "Please enter last _name, first _name and birthday:\n";
     for (std::string last_name, first_name, birthday;
          std::cout << msg, std::cin >> last_name >> first_name >> birthday;) {
         families.add(last_name, first_name, birthday);
