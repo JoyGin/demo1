@@ -40,4 +40,4 @@ add_executable(testsignal signal/testsignal.cpp)
 
 add_executable(testAttrCtor attr_constructor/testAttrCtor.cpp)
 
-add_executable(ch13 ch13/ch13.cpp)
+add_executable(ch13 ch13/ch13.cpp ch13/Message.cpp ch13/Message.h ch13/StrVec.cpp ch13/StrVec.h)

@@ -206,6 +206,7 @@ public:
 
     HasPtr_22 &operator=(const HasPtr_22 &hp) {
         if (this == &hp) {
+            std::cout << "operator= on same obj" << std::endl;
             return *this;
         }
         auto new_ps = new std::string(*hp.ps);
@@ -362,6 +363,30 @@ void q_13_31() {
     vec.push_back(HasPtr_22("hi"));
     vec.push_back(HasPtr_22("array"));
     std::sort(vec.begin(), vec.end());
+//    std::sort(vec.begin(), vec.end(), [](const HasPtr_22 &e1, const HasPtr_22 &e2) -> bool {
+//        return *e1.ps < *e2.ps;
+//    });
+}
+
+/**
+ * 练习13.44：编写标准库string类的简化版本，命名为String。你的类应该
+ * 至少有一个默认构造函数和一个接受C风格字符串指针参数的构造函
+ * 数。使用allocator为你的String类分配所需内存。
+ */
+
+/**
+ * 练习13.47：对你在练习13.44（13.5节，第470页）中定义的String类，
+ * 为它的拷贝构造函数和拷贝赋值运算符添加一条语句，在每次函数执行
+ * 时打印一条信息。
+ */
+
+/**
+ * 练习13.48：定义一个vector<String>并在其上多次调用push_back。运行
+ * 你的程序，并观察String被拷贝了多少次。
+ */
+
+int f() {
+    return 1;
 }
 
 int main() {
@@ -370,5 +395,12 @@ int main() {
 //    q_13_16();
 //    q_13_27();
 //    q_13_30();
-    q_13_31();
+//    q_13_31();
+
+    std::vector<int> vi(100);
+    int&& r1 = f();
+    int& r2 = vi[0];
+    int& r3 = r1;
+    r3 = 2;
+    int&& r4 = vi[0] * f();
 }
