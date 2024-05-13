@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
+#include "StrVec.h"
 
 class CopyCon {
 public:
@@ -369,6 +370,30 @@ void q_13_31() {
 }
 
 /**
+ * 13.5节练习
+ * 练习13.39：编写你自己版本的StrVec，包括自己版本的reserve、
+ * capacity（参见9.4节，第318页）和resize（参见9.3.5节，第314页）。
+ */
+void q_13_39() {
+    StrVec strVec;
+    strVec.push_back("hello");
+    strVec.push_back("world");
+    strVec.resize(8);
+    std::cout << "capacity=" << strVec.capacity() << std::endl;
+}
+
+/**
+ * 练习13.40：为你的StrVec类添加一个构造函数，它接受一个
+ * initializer_list<string>参数。
+ */
+void q_13_40() {
+    StrVec sv({"hello", "world", "!"});
+    std::for_each(sv.begin(), sv.end(), [](std::string &s) {
+        std::cout << s << std::endl;
+    });
+}
+
+/**
  * 练习13.44：编写标准库string类的简化版本，命名为String。你的类应该
  * 至少有一个默认构造函数和一个接受C风格字符串指针参数的构造函
  * 数。使用allocator为你的String类分配所需内存。
@@ -385,10 +410,6 @@ void q_13_31() {
  * 你的程序，并观察String被拷贝了多少次。
  */
 
-int f() {
-    return 1;
-}
-
 int main() {
 //    q_13_14();
 //    q_13_15();
@@ -396,11 +417,6 @@ int main() {
 //    q_13_27();
 //    q_13_30();
 //    q_13_31();
-
-    std::vector<int> vi(100);
-    int&& r1 = f();
-    int& r2 = vi[0];
-    int& r3 = r1;
-    r3 = 2;
-    int&& r4 = vi[0] * f();
+//    q_13_39();
+    q_13_40();
 }

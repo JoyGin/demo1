@@ -27,6 +27,8 @@ public:
 
     StrVec(const StrVec &sv);
 
+    StrVec(std::initializer_list<std::string> il);
+
     StrVec &operator=(const StrVec &sv);
 
     ~StrVec();
@@ -49,6 +51,10 @@ public:
         return first_free;
     }
 
+    void reserve(size_t new_cap);
+    void resize(size_t count);
+    void resize(size_t count, const std::string&);
+
 private:
     static std::allocator<std::string> alloc;
 
@@ -59,6 +65,8 @@ private:
     void free(); // 销毁元素并释放内存
 
     void reallocate(); // 重新分配更多内存
+
+    void alloc_n_move(size_t new_cap);
 
     std::string *elements; // 指向分配的内存中的首元素
     std::string *first_free; // 指向最后一个实际元素之后的位置

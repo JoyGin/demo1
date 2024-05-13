@@ -4,6 +4,7 @@
 
 #include "StrVec.h"
 
+std::allocator<std::string> StrVec::alloc;
 
 void StrVec::chk_n_alloc() {
     if (size() == capacity()) {
@@ -24,6 +25,10 @@ void StrVec::free() {
         alloc.deallocate(elements, cap - elements);
     }
 }
+
+//void StrVec::free() {
+//    for_each(elements, first_free, [](std::string &rhs){ alloc.destroy(&rhs); });
+//}
 
 void StrVec::reallocate() {
     auto newcapacity = size() ? 2 * size() : 1;
@@ -62,4 +67,57 @@ StrVec::~StrVec() {
 void StrVec::push_back(const std::string &str) {
     chk_n_alloc();
     alloc.construct(first_free++, str);
+}
+
+//StrVec::StrVec(std::initializer_list<std::string> il) {
+//    elements = alloc.allocate(il.size());
+//    first_free = cap = elements + il.size();
+//    int i = 0;
+//    for (auto cur = il.begin(); cur != il.end(); ++cur, ++i) {
+//        alloc.construct(elements + i, *cur);
+//    }
+//}
+
+StrVec::StrVec(std::initializer_list<std::string> il)
+{
+    auto newdata = alloc_n_copy(il.begin(), il.end());
+    elements = newdata.first;
+    first_free = cap = newdata.second;
+}
+
+void StrVec::reserve(size_t new_cap) {
+    if (new_cap > capacity()) {
+        alloc_n_move(new_cap);
+    }
+}
+
+void StrVec::resize(size_t count) {
+    resize(count, std::string());
+}
+
+void StrVec::resize(size_t count, const std::string &s) {
+    if (count > size()) {
+        if (count > capacity()) {
+            reserve(count * 2);
+        }
+        for (size_t i = size(); i != count; ++i) {
+            alloc.construct(first_free++, s);
+        }
+    } else {
+        while (first_free != elements + count) {
+            alloc.destroy(--first_free);
+        }
+    }
+}
+
+void StrVec::alloc_n_move(size_t new_cap) {
+    auto newdata = alloc.allocate(new_cap);
+    auto dest = newdata;
+    auto elem = elements;
+    for (int i = 0; i < size(); ++i) {
+        alloc.construct(dest++, std::move(*elem++));
+    }
+    free();
+    elements = newdata;
+    first_free = cap = dest;
 }
