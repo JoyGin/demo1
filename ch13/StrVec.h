@@ -6,7 +6,7 @@
 #define DEMO1_STRVEC_H
 
 #include <string>
-#include <alloca.h>
+#include <memory>
 
 //using std::string;
 
