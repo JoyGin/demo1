@@ -15,7 +15,11 @@ public:
 
     String(const String &s);
 
+    String(String &&s) noexcept;
+
     String &operator=(const String &s);
+
+    String &operator=(String &&s) noexcept;
 
     ~String();
 
@@ -32,7 +36,7 @@ public:
     }
 
 private:
-    std::pair<char*,char*> alloc_n_copy(const char *b, const char *e);
+    std::pair<char *, char *> alloc_n_copy(const char *b, const char *e);
 
     void range_initializer(const char *b, const char *e);
 

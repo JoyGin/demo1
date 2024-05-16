@@ -121,3 +121,21 @@ void StrVec::alloc_n_move(size_t new_cap) {
     elements = newdata;
     first_free = cap = dest;
 }
+
+StrVec &StrVec::operator=(StrVec &&sv)  noexcept {
+    if (this != &sv) {
+        free();
+        elements = sv.elements;
+        first_free = sv.first_free;
+        cap = sv.cap;
+        sv.elements = sv.first_free = sv.cap = nullptr;
+    }
+    return *this;
+}
+
+StrVec::StrVec(StrVec &&sv) noexcept {
+    elements = sv.elements;
+    first_free = sv.first_free;
+    cap = sv.cap;
+    sv.elements = sv.first_free = sv.cap = nullptr;
+}

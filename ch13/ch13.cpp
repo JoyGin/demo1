@@ -454,6 +454,103 @@ void q_13_48() {
     }
 }
 
+/**
+ * 13.6.2节练习
+ * 练习13.49：为你的StrVec、String和Message类添加一个移动构造函数和
+ * 一个移动赋值运算符。
+ */
+void testEmptyDataRightCons() {
+    StrVec emtpy_vec;
+    StrVec strVec = std::move(emtpy_vec);
+    std::for_each(strVec.begin(), strVec.end(), [](auto &ele) {
+        std::cout << ele << std::endl;
+    });
+
+    String empty_str;
+    String str = std::move(empty_str);
+    std::cout << str.c_str() << std::endl;
+}
+
+void testFillDataRightCons() {
+    StrVec fill_vec({"hello", "world"});
+    StrVec strVec = std::move(fill_vec);
+    std::for_each(strVec.begin(), strVec.end(), [](auto &ele) {
+        std::cout << ele << std::endl;
+    });
+
+    String fill_str("hello world");
+    String str = std::move(fill_str);
+    std::cout << str.c_str() << std::endl;
+}
+
+void testEmptyDataAssignEmptyData() {
+    StrVec emtpy_vec;
+    StrVec strVec;
+    strVec = std::move(emtpy_vec);
+    std::for_each(strVec.begin(), strVec.end(), [](auto &ele) {
+        std::cout << ele << std::endl;
+    });
+
+    String empty_str;
+    String str;
+    str = std::move(empty_str);
+    std::cout << str.c_str() << std::endl;
+}
+
+void testEmptyDataAssignFillData() {
+    StrVec fill_vec({"hello", "world"});
+    StrVec strVec;
+    strVec = std::move(fill_vec);
+    std::for_each(strVec.begin(), strVec.end(), [](auto &ele) {
+        std::cout << ele << std::endl;
+    });
+
+    String fill_str("hello world");
+    String str;
+    str = std::move(fill_str);
+    std::cout << str.c_str() << std::endl;
+}
+
+void testFillDataAssignEmptyData() {
+    StrVec emtpy_vec;
+    StrVec strVec({"hello", "world"});
+    strVec = std::move(emtpy_vec);
+    std::for_each(strVec.begin(), strVec.end(), [](auto &ele) {
+        std::cout << ele << std::endl;
+    });
+
+    String empty_str;
+    String str("hello world");
+    str = std::move(empty_str);
+    std::cout << str.c_str() << std::endl;
+}
+
+void testFillDataAssignFillData() {
+    StrVec fill_vec({"hello", "world"});
+    StrVec strVec({"Hi", "Thursday"});
+    std::for_each(strVec.begin(), strVec.end(), [](auto &ele) {
+        std::cout << ele << std::endl;
+    });
+    strVec = std::move(fill_vec);
+    std::for_each(strVec.begin(), strVec.end(), [](auto &ele) {
+        std::cout << ele << std::endl;
+    });
+
+    String fill_str("hello world");
+    String str("str");
+    str = std::move(fill_str);
+    std::cout << str.c_str() << std::endl;
+}
+
+void q_13_49() {
+    testEmptyDataRightCons();
+    testFillDataRightCons();
+    testEmptyDataAssignEmptyData();
+    testEmptyDataAssignFillData();
+    testFillDataAssignEmptyData();
+    testFillDataAssignFillData();
+}
+
 int main() {
 //    q_13_14();
 //    q_13_15();
@@ -463,5 +560,6 @@ int main() {
 //    q_13_31();
 //    q_13_39();
 //    q_13_40();
-    q_13_48();
+//    q_13_48();
+    q_13_49();
 }

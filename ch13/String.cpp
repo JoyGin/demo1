@@ -20,6 +20,12 @@ String::String(const String &s) {
     std::cout << "copy constructor" << std::endl;
 }
 
+String::String(String &&s) noexcept {
+    elements = s.elements;
+    end = s.end;
+    s.elements = s.end = nullptr;
+}
+
 String &String::operator=(const String &s) {
     if (this != &s) {
         auto newStr = alloc_n_copy(s.elements, s.end);
@@ -27,6 +33,16 @@ String &String::operator=(const String &s) {
         elements = newStr.first;
         end = newStr.second;
         std::cout << "copy-assignment" << std::endl;
+    }
+    return *this;
+}
+
+String &String::operator=(String &&s) noexcept {
+    if (this != &s) {
+        free();
+        elements = s.elements;
+        end = s.end;
+        s.elements = s.end = nullptr;
     }
     return *this;
 }

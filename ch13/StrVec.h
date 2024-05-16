@@ -27,9 +27,13 @@ public:
 
     StrVec(const StrVec &sv);
 
+    StrVec(StrVec &&sv) noexcept;
+
     StrVec(std::initializer_list<std::string> il);
 
     StrVec &operator=(const StrVec &sv);
+
+    StrVec &operator=(StrVec &&sv) noexcept;
 
     ~StrVec();
 
