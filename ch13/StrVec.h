@@ -52,8 +52,10 @@ public:
     }
 
     void reserve(size_t new_cap);
+
     void resize(size_t count);
-    void resize(size_t count, const std::string&);
+
+    void resize(size_t count, const std::string &);
 
 private:
     static std::allocator<std::string> alloc;
