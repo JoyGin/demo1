@@ -41,6 +41,10 @@ StrBlobPtr StrBlob::end() const {
     return StrBlobPtr(*this, size());
 }
 
+void StrBlob::push_back(std::string &&str) const {
+    data->push_back(std::move(str));
+}
+
 bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs) {
     if (!lhs.wptr.expired() && !rhs.wptr.expired()) {
         return (lhs.wptr.lock() == rhs.wptr.lock()) && (lhs.curr == rhs.curr);

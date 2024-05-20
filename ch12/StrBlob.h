@@ -35,6 +35,8 @@ public:
 
     void push_back(const std::string &str) const;
 
+    void push_back(std::string &&str) const;
+
     void pop_back();
 
     std::string &front();

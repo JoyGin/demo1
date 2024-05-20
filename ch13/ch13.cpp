@@ -7,6 +7,7 @@
 #include <assert.h>
 #include "StrVec.h"
 #include "String.h"
+#include "Foo.h"
 
 class CopyCon {
 public:
@@ -551,6 +552,16 @@ void q_13_49() {
     testFillDataAssignFillData();
 }
 
+/**
+ * 练习13.58：编写新版本
+ * 的Foo类，其sorted函数中有打印语句，测试这个类，来验证你对前两题
+ * 的答案是否正确。
+ */
+void q_13_58() {
+    Foo foo;
+    foo.sorted();
+}
+
 int main() {
 //    q_13_14();
 //    q_13_15();
@@ -561,5 +572,6 @@ int main() {
 //    q_13_39();
 //    q_13_40();
 //    q_13_48();
-    q_13_49();
+//    q_13_49();
+    q_13_58();
 }
