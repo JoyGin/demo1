@@ -45,3 +45,5 @@ add_executable(ch13 ch13/ch13.cpp ch13/Message.cpp ch13/Message.h ch13/StrVec.cp
 add_executable(testmystring mystring/MyString.cpp mystring/MyString.h mystring/testmystring.cpp)
 
 add_executable(testmystrvec mystrvec/MyStrVec.h mystrvec/MyStrVec.cpp mystrvec/testmystrvec.cpp)
+
+add_executable(ch14 ch14/Sales_data.h ch14/Sales_data.cpp ch14/ch14.cpp)
