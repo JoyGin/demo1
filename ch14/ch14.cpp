@@ -230,6 +230,39 @@ void q_14_44() {
     }
 }
 
+class TestCast {
+public:
+    explicit TestCast(int val) : _val(val) {}
+    explicit operator const int() {
+        return _val;
+    }
+
+    explicit operator int() const {
+        return _val;
+    }
+private:
+    int _val;
+};
+
+class SmallInt {
+    friend SmallInt operator+(const SmallInt& lhs, const SmallInt& rhs) {
+        return SmallInt(lhs.val + rhs.val);
+    }
+public:
+    SmallInt(int v = 0) : val(v) {}
+
+    operator int() const {
+        return val;
+    }
+private:
+    std::size_t val;
+};
+
+void q_14_53() {
+    SmallInt s1;
+//    double d = s1 + 3.14;
+}
+
 int main() {
 //    q_14_34();
 //    q_14_35();
@@ -238,6 +271,11 @@ int main() {
 //    q_14_39();
 //    q_14_42();
 //    q_14_43();
-    q_14_44();
+//    q_14_44();
+
+    TestCast a(1);
+
+    int b = static_cast<int>(a);
+    std::cout << b;
     return 0;
 }
